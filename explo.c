@@ -6,13 +6,13 @@
 struct Lieux
 {
 	char name[10];
-	char description[30];
+	char description[80];
 	int dif;
 	int tID[2];
 };
 typedef struct Lieux lieux;
 
-int deplacement (lieux tLieux[], int lieuAct)
+void deplacement (lieux tLieux[], int *lieuAct, int *stamina)
 {
 	int lieuChoix;
 	
@@ -21,15 +21,14 @@ int deplacement (lieux tLieux[], int lieuAct)
 	{
 		printf("Ou voulez vous aller ?\n");
 		scanf("%d",&lieuChoix);
-		printf("choix : %d\n",lieuChoix);
 		
 		for (int i = 0; i < 2; i++)
 		{
-			//printf("tID : %d, choix : %d\n", tLieux[lieuAct].tID[i], lieuChoix);
-			if (tLieux[lieuAct].tID[i] == lieuChoix)
+			if (tLieux[*lieuAct].tID[i] == lieuChoix)
 			{
-				
-				printf("Vous etes arrive dans un lieu ou il y a %s", tLieux[lieuChoix].description);
+				*lieuAct = lieuChoix;
+				*stamina -= tLieux[*lieuAct].dif;
+				printf("Vous etes arrive dans un lieu ou il y a %s.\n", tLieux[lieuChoix].description);
 				ok ++;
 			}
 		}
@@ -41,7 +40,6 @@ int deplacement (lieux tLieux[], int lieuAct)
 		
 	}
 	
-	return lieuAct;
 }
 
 int main ()
@@ -55,16 +53,56 @@ int main ()
 	
 	lieux tLieux[6] = {lieu0, lieu1, lieu2, lieu3, lieu4, lieu5};
 	
+	int stamina = 100;
 	int lieuAct = 0;
-	printf("Vous etes au lieu 1. Vous pouvez atteindre les lieux :\n");
+	int game = 0;
+	char choix[4];
 	
-	for (int i = 0; i<2; i++)
+	while (game == 0)
+	{
+		printf("Vous avez %d stamina.\n", stamina);
+		printf("Vous etes au lieu %d. Vous pouvez atteindre les lieux :\n", lieuAct);
+	
+		for (int i = 0; i<2; i++)
 		{
 			printf(" %d\n", tLieux[lieuAct].tID[i]);
 		}
 	
-	
-	lieuAct = deplacement(tLieux, lieuAct);
+		deplacement(tLieux, &lieuAct, &stamina);
+		
+		if(tLieux[lieuAct].dif > 10)
+		{
+			printf("Voulez vous creer un avant poste ?\n");
+			scanf("%s", choix);
+			
+			if (strcmp(choix, "oui") == 0)
+			{
+				strcat(tLieux[lieuAct].description, ". Il y a un avant poste dans ce lieu.\n");
+				tLieux[lieuAct].dif /= 2;
+				printf("L'avant poste a ete cree.\n");
+			}
+		}
+		
+		if(tLieux[lieuAct].dif < 5)
+		{
+			printf("Voulez vous vous reposer ?\n");
+			scanf("%s", choix);
+			
+			if (strcmp(choix, "oui") == 0)
+			{
+				stamina += 50;
+				if (stamina >100)
+				{
+					stamina = 100;
+				}
+				printf("Vous vous etes repose.\n");
+			}
+		}
+		
+		printf("Pour continuer taper 0, sinon n'importe quel autre chiffre.\n");
+		scanf("%d", &game);
+	}
+
 
 	
 	return 0;
