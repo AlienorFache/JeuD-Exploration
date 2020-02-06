@@ -5,29 +5,25 @@
 
 int main ()
 {
-	int tPays[2] = {0,1};
-	int choix;
+	char pays1[10] = "Australie";
+	char pays2[6] = "Maroc";
+	
+	char paysChoix[10];
+	
 	
 	int ok = 0;
 	while (ok == 0)
 	{
-		printf("Tapez 0 pour aller en Australie et 1 pour aller au Maroc.\n");
-		scanf("%d",&choix);
+		printf("Voulez vous aller en Australie ou au Maroc ?\n");
+		scanf("%s",paysChoix);
 		
-		if (choix == 0 || choix == 1)
+		if (strcmp(paysChoix, pays1) == 0 || strcmp(paysChoix, pays2) == 0)
 		{
 			ok ++;
 		}
 	}
 	
-	if (choix == 0)
-	{
-		printf("Vous etes arrive en Australie.\n");
-	}
-	else
-	{
-		printf("Vous etes arrive au Maroc.\n");
-	}
+	printf("Vous avez atteind : %s.\n", paysChoix);
 	
 	return 0;
 }
