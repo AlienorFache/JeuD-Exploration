@@ -8,46 +8,63 @@ struct Lieux
 	char name[10];
 	char description[30];
 	int dif;
-	int tID[5];
+	int tID[2];
 };
 typedef struct Lieux lieux;
 
-void deplacement (lieux lieu0, lieux lieu1, lieux lieu2)
+int deplacement (lieux tLieux[], int lieuAct)
 {
-	char lieuChoix[7];
+	int lieuChoix;
 	
 	int ok = 0;
 	while (ok == 0)
 	{
 		printf("Ou voulez vous aller ?\n");
-		scanf("%s",lieuChoix);
+		scanf("%d",&lieuChoix);
+		printf("choix : %d\n",lieuChoix);
 		
-		if (strcmp(lieuChoix, lieu0.name) == 0)
+		for (int i = 0; i < 2; i++)
 		{
-			printf("Vous aller dans un endroit ou il y a %s.\n", lieu0.description);
-			ok ++;
+			//printf("tID : %d, choix : %d\n", tLieux[lieuAct].tID[i], lieuChoix);
+			if (tLieux[lieuAct].tID[i] == lieuChoix)
+			{
+				
+				printf("Vous etes arrive dans un lieu ou il y a %s", tLieux[lieuChoix].description);
+				ok ++;
+			}
 		}
-		if (strcmp(lieuChoix, lieu1.name) == 0)
+		
+		if (ok == 0)
 		{
-			printf("Vous aller dans un endroit ou il y a %s.\n", lieu1.description);
-			ok ++;
+			printf("Vous ne pouvez pas atteindre cette destination.\n");
 		}
-		if (strcmp(lieuChoix, lieu2.name) == 0)
-		{
-			printf("Vous aller dans un endroit ou il y a %s.\n", lieu2.description);
-			ok ++;
-		}
+		
 	}
+	
+	return lieuAct;
 }
 
 int main ()
 {
-	lieux lieu0 = {"lieu1", "une foret tropical", 12,{1,2}};
-	lieux lieu1 = {"lieu2", "des montagnes", 5,{0,2}};
-	lieux lieu2 = {"lieu3", "une plage de sable blanc", 19,{0,1}};
+	lieux lieu0 = {"lieu0", "une foret tropical", 12,{4,2}};
+	lieux lieu1 = {"lieu1", "des montagnes", 5,{2,5}};
+	lieux lieu2 = {"lieu2", "une plage de sable blanc", 19,{3,4}};
+	lieux lieu3 = {"lieu3", "d'enormes grottes", 15,{1,4}};
+	lieux lieu4 = {"lieu4", "un volcan en activitee", 10,{0,2}};
+	lieux lieu5 = {"lieu5", "un ranch", 1,{0,1}};	
+	
+	lieux tLieux[6] = {lieu0, lieu1, lieu2, lieu3, lieu4, lieu5};
+	
+	int lieuAct = 0;
+	printf("Vous etes au lieu 1. Vous pouvez atteindre les lieux :\n");
+	
+	for (int i = 0; i<2; i++)
+		{
+			printf(" %d\n", tLieux[lieuAct].tID[i]);
+		}
 	
 	
-	deplacement(lieu0, lieu1, lieu2);
+	lieuAct = deplacement(tLieux, lieuAct);
 
 	
 	return 0;
